@@ -274,9 +274,6 @@
                 </div>
                 
                 <div class="flex items-center space-x-4">
-                    <button class="text-gray-300 hover:text-white transition">
-                        <i class="fas fa-moon"></i>
-                    </button>
                     <button onclick="window.location.href='/generator'" class="btn-primary">
                         <i class="fas fa-rocket mr-2"></i> Get Started
                     </button>
@@ -297,7 +294,7 @@
                         <span class="text-sm">AI-Powered • Enterprise Ready • 99.9% Uptime</span>
                     </div>
                     
-                    <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
                         Generate Cover Letters That 
                         <span class="gradient-text typing-effect">Actually Get You Hired</span>
                     </h1>
@@ -323,7 +320,7 @@
                         </div>
                         <div class="flex items-center">
                             <i class="fas fa-check-circle text-green-400 mr-2"></i>
-                            <span>10 Free Letters</span>
+                            <span>Free Letters</span>
                         </div>
                         <div class="flex items-center">
                             <i class="fas fa-check-circle text-green-400 mr-2"></i>
@@ -588,6 +585,108 @@
         </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    What Our Users
+                    <span class="gradient-text">Say</span>
+                </h2>
+                <p class="text-xl text-gray-400">
+                    Real professionals. Real results.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-10">
+
+                <!-- Testimonial 1 -->
+                <div class="glass-morphism p-8 rounded-3xl hover-lift">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            A
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-white font-semibold text-lg">Amit Sharma</h4>
+                            <p class="text-gray-400 text-sm">Software Engineer</p>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        “I applied to 12 companies before using this platform and got zero responses.
+                        After using CoverLetter AI Pro, I received 4 interview calls within two weeks.
+                        The personalization is incredibly accurate.”
+                    </p>
+
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-morphism p-8 rounded-3xl hover-lift">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            S
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-white font-semibold text-lg">Sneha Patel</h4>
+                            <p class="text-gray-400 text-sm">Marketing Analyst</p>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        “The AI understands job descriptions better than most applicants.
+                        It highlighted my strengths exactly the way recruiters expect.
+                        I saved hours and landed my dream role faster.”
+                    </p>
+
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-morphism p-8 rounded-3xl hover-lift">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            H
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-white font-semibold text-lg">Himansi Choudhary</h4>
+                            <p class="text-gray-400 text-sm">Data Analyst</p>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        “What impressed me most was the keyword optimization.
+                        My applications started passing ATS systems immediately.
+                        This tool genuinely gives you a competitive advantage.”
+                    </p>
+
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star mr-1"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="py-20 relative">
         <div class="container mx-auto px-6">
@@ -603,13 +702,31 @@
                     <button onclick="window.location.href='/generator'" class="btn-primary text-lg px-8 py-4">
                         <i class="fas fa-rocket mr-2"></i> Get Started
                     </button>
-                    <button class="glass-morphism px-8 py-4 rounded-full font-semibold hover:bg-white hover:bg-opacity-20 transition">
-                        <i class="fas fa-calendar mr-2"></i> Schedule Demo
-                    </button>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="fixed inset-0 hidden z-50 flex items-center justify-center bg-black/60">
+        <div class="relative w-full max-w-md mx-4 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-8 text-white">
+            <!-- Close -->
+            <button onclick="closeContactModal()" class="absolute top-4 right-4 text-2xl text-gray-300 hover:text-white"> &times; </button>
+            <h2 class="text-3xl font-bold mb-2 text-center">Contact Us</h2>
+            <p class="text-gray-400 text-center mb-6">
+                Have questions? We’d love to hear from you.
+            </p>
+
+            <form class="space-y-4">
+                <input type="text" placeholder="Your Name" class="w-full rounded-lg bg-gray-900 px-4 py-3 text-white border border-gray-700 focus:outline-none">
+                <input type="email" placeholder="Your Email" class="w-full rounded-lg bg-gray-900 px-4 py-3 text-white border border-gray-700 focus:outline-none">
+                <textarea rows="4" placeholder="Your Message" class="w-full rounded-lg bg-gray-900 px-4 py-3 text-white border border-gray-700 focus:outline-none"></textarea>
+                <button type="submit" class="btn-primary w-full">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="py-12 border-t border-gray-800">
@@ -630,30 +747,24 @@
                 <div>
                     <h4 class="text-white font-semibold mb-4">Product</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition">Features</a></li>
-                        <li><a href="#" class="hover:text-white transition">Pricing</a></li>
-                        <li><a href="#" class="hover:text-white transition">API</a></li>
-                        <li><a href="#" class="hover:text-white transition">Integrations</a></li>
+                        <li><a href="#features" class="hover:text-white transition">Features</a></li>
+                        <li><a href="#testimonials" class="hover:text-white transition">Reviews</a></li>
                     </ul>
                 </div>
                 
                 <div>
                     <h4 class="text-white font-semibold mb-4">Company</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition">About</a></li>
-                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
-                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
-                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                        <li><a href="#about" class="hover:text-white transition">About</a></li>
+                        <li><a href="javascript:void(0)" onclick="openContactModal()" class="hover:text-white transition cursor-pointer">Contact</a></li>
                     </ul>
                 </div>
                 
                 <div>
                     <h4 class="text-white font-semibold mb-4">Legal</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition">Privacy</a></li>
-                        <li><a href="#" class="hover:text-white transition">Terms</a></li>
-                        <li><a href="#" class="hover:text-white transition">Security</a></li>
-                        <li><a href="#" class="hover:text-white transition">Compliance</a></li>
+                        <li><a href="#privacy" class="hover:text-white transition">Privacy</a></li>
+                        <li><a href="#terms" class="hover:text-white transition">Terms</a></li>
                     </ul>
                 </div>
             </div>
@@ -759,6 +870,19 @@
                 }, 10);
             }, 10000);
         }
+
+        function openContactModal() {
+            document.getElementById("contactModal").classList.remove("hidden");
+        }
+
+        function closeContactModal() {
+            document.getElementById("contactModal").classList.add("hidden");
+        }
+
+        // Click outside to close
+        document.getElementById("contactModal").addEventListener("click", function (e) {
+            if (e.target === this) closeContactModal();
+        });
     </script>
 </body>
 </html>
