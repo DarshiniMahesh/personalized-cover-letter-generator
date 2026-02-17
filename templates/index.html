@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoverLetter Generator - Create Professional Cover Letters</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-morphism {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+        }
+
+        .nav-blur {
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 1px solid rgba(102, 126, 234, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.8);
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            color: #9ca3af;
+        }
+
+        .tab-button.active {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(102, 126, 234, 0.1);
+            color: white;
+        }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.6);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .input-field::placeholder {
+            color: #6b7280;
+        }
+
+        /* Select dropdown styling */
+        select.input-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
+        }
+
+        select.input-field option {
+            background: #1a1a3e;
+            color: white;
+            padding: 8px;
+        }
+
+        select.input-field option:hover {
+            background: #667eea;
+        }
+
+        .textarea-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .textarea-field:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.6);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .textarea-field::placeholder {
+            color: #6b7280;
+        }
+
+        .file-upload {
+            border: 2px dashed rgba(102, 126, 234, 0.5);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: rgba(102, 126, 234, 0.8);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .file-upload.dragover {
+            border-color: rgba(102, 126, 234, 1);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .loading-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .copy-button {
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .copy-button:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.6);
+        }
+
+        .copy-button.copied {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: rgba(34, 197, 94, 0.4);
+            color: #22c55e;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #0f0f23, #1a1a3e, #0f0f23);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-blur">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-signature text-white"></i>
+                    </div>
+                    <span class="text-white font-bold text-xl">CoverLetter AI Pro</span>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='/'" class="text-gray-300 hover:text-white transition">
+                        <i class="fas fa-home mr-2"></i> Home
+                    </button>
+                    <button onclick="window.location.href='/'" class="btn-primary">
+                        <i class="fas fa-arrow-left mr-2"></i> Back to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 pt-24 pb-12">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                    Create Your 
+                    <span class="gradient-text">Professional Cover Letter</span>
+                </h1>
+                <p class="text-xl text-gray-300">
+                    Choose your preferred method and let AI craft the perfect cover letter for you
+                </p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="tab-button active" onclick="switchTab('skills')">
+                    <i class="fas fa-brain mr-2"></i> Skills-Based
+                </button>
+                <button class="tab-button" onclick="switchTab('resume')">
+                    <i class="fas fa-file-alt mr-2"></i> Resume-Based
+                </button>
+                <button class="tab-button" onclick="switchTab('manual')">
+                    <i class="fas fa-edit mr-2"></i> Manual Input
+                </button>
+            </div>
+
+            <!-- Skills-Based Generation -->
+            <div id="skills-tab" class="tab-content">
+                <div class="glass-morphism p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-white">Skills-Based Generation</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label for="skills-input" class="block text-sm font-medium text-gray-300 mb-2">
+                                Your Skills & Experience
+                            </label>
+                            <textarea 
+                                id="skills-input" 
+                                class="textarea-field w-full"
+                                placeholder="Enter your skills, experience, and qualifications. For example: 5 years of software development experience, proficient in Python, JavaScript, React, Node.js, strong problem-solving skills, team leadership experience...">
+                            </textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Job Description (Optional)
+                            </label>
+                            <div class="space-y-4">
+                                <!-- JD Input Method Selection -->
+                                <div class="flex space-x-4">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="skills-jd-method" value="upload" checked onchange="toggleSkillsJDMethod('upload')" class="mr-2">
+                                        <span>Upload JD File</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="skills-jd-method" value="manual" onchange="toggleSkillsJDMethod('manual')" class="mr-2">
+                                        <span>Paste JD Text</span>
+                                    </label>
+                                </div>
+                                
+                                <!-- JD File Upload -->
+                                <div id="skills-jd-upload" class="upload-area">
+                                    <input type="file" id="skills-jd-file" accept=".txt,.pdf,.docx,.doc" class="hidden" onchange="handleSkillsJDUpload(event)">
+                                    <div onclick="document.getElementById('skills-jd-file').click()" class="cursor-pointer">
+                                        <i class="fas fa-cloud-upload-alt text-4xl text-purple-400 mb-4"></i>
+                                        <p class="text-gray-300">Click to upload job description file</p>
+                                        <p class="text-sm text-gray-400">Supports: PDF, DOCX, TXT</p>
+                                    </div>
+                                    <div id="skills-jd-file-info" class="mt-2 text-sm text-green-400"></div>
+                                </div>
+                                
+                                <!-- JD Manual Input -->
+                                <div id="skills-jd-manual" class="hidden">
+                                    <textarea 
+                                        id="skills-jd" 
+                                        class="textarea-field w-full"
+                                        placeholder="Paste the job description here for better matching..."
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="skills-years" class="block text-sm font-medium text-gray-300 mb-2">
+                                    Years of Experience
+                                </label>
+                                <div class="flex gap-2">
+                                    <input 
+                                        type="number" 
+                                        id="skills-years" 
+                                        class="input-field w-24"
+                                        placeholder="Years"
+                                        min="0"
+                                        max="50"
+                                        value="3"
+                                    >
+                                    <select id="skills-experience-auto" class="input-field flex-1" disabled>
+                                        <option value="fresher">Fresher / Entry Level (0-1 years)</option>
+                                        <option value="mid-level" selected>Professional (2-5 years)</option>
+                                        <option value="senior">Senior Professional (6-10 years)</option>
+                                        <option value="expert">Expert / Lead (10+ years)</option>
+                                    </select>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Enter exact years • Auto-categorized</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    Target Role
+                                </label>
+                                <select id="skills-role" class="input-field w-full">
+                                    <option value="Frontend Developer">Frontend Developer</option>
+                                    <option value="Backend Developer">Backend Developer</option>
+                                    <option value="Full Stack Developer">Full Stack Developer</option>
+                                    <option value="Data Scientist">Data Scientist</option>
+                                    <option value="ML Engineer">ML Engineer</option>
+                                    <option value="Data Analyst">Data Analyst</option>
+                                    <option value="DevOps Engineer">DevOps Engineer</option>
+                                    <option value="Software Engineer">Software Engineer</option>
+                                    <option value="Product Manager">Product Manager</option>
+                                    <option value="UX Designer">UX Designer</option>
+                                    <option value="Mobile Developer">Mobile Developer</option>
+                                    <option value="Cloud Engineer">Cloud Engineer</option>
+                                    <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                                    <option value="QA Engineer">QA Engineer</option>
+                                    <option value="Technical Lead">Technical Lead</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Company Name (Optional)
+                            </label>
+                            <input 
+                                type="text" 
+                                id="skills-company" 
+                                class="input-field w-full"
+                                placeholder="e.g., Tech Corp"
+                            >
+                        </div>
+
+                        <button onclick="generateFromSkills()" class="btn-primary w-full py-3">
+                            <i class="fas fa-magic mr-2"></i> Generate Cover Letter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume-Based Generation -->
+            <div id="resume-tab" class="tab-content hidden">
+                <div class="glass-morphism p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-white">Resume-Based Generation</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Resume Input Method -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Choose Resume Input Method
+                            </label>
+                            <div class="flex space-x-4 mb-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="resume-input-method" value="upload" checked onchange="toggleResumeInputMethod('upload')" class="mr-2">
+                                    <span>Upload Resume File</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="resume-input-method" value="paste" onchange="toggleResumeInputMethod('paste')" class="mr-2">
+                                    <span>Paste Resume Text</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Resume Upload -->
+                        <div id="resume-upload-section">
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Upload Resume
+                            </label>
+                            <div class="file-upload" onclick="document.getElementById('resume-file').click()" ondrop="handleDrop(event, 'resume')" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-purple-400 mb-4"></i>
+                                <p class="text-gray-300 mb-2">Drop your resume here or click to browse</p>
+                                <p class="text-sm text-gray-500">Supports PDF, DOCX, TXT files (Max 16MB)</p>
+                                <input type="file" id="resume-file" accept=".pdf,.docx,.doc,.txt" onchange="handleFileSelect(event, 'resume')" class="hidden">
+                            </div>
+                            <div id="resume-file-info" class="mt-2 text-sm text-gray-400"></div>
+                        </div>
+
+                        <!-- Resume Paste -->
+                        <div id="resume-paste-section" class="hidden">
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Paste Resume Text
+                            </label>
+                            <textarea 
+                                id="resume-text" 
+                                class="textarea-field w-full"
+                                placeholder="Paste your resume content here..."
+                            ></textarea>
+                        </div>
+
+                        <!-- Job Description -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Job Description
+                            </label>
+                            <textarea 
+                                id="resume-jd" 
+                                class="textarea-field w-full"
+                                placeholder="Paste the job description here..."
+                            ></textarea>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    Years of Experience
+                                </label>
+                                <div class="flex gap-2">
+                                    <input 
+                                        type="number" 
+                                        id="resume-years" 
+                                        class="input-field w-24"
+                                        placeholder="Years"
+                                        min="0"
+                                        max="50"
+                                        value="3"
+                                    >
+                                    <select id="resume-experience-auto" class="input-field flex-1" disabled>
+                                        <option value="fresher">Fresher / Entry Level (0-1 years)</option>
+                                        <option value="mid-level" selected>Professional (2-5 years)</option>
+                                        <option value="senior">Senior Professional (6-10 years)</option>
+                                        <option value="expert">Expert / Lead (10+ years)</option>
+                                    </select>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Enter exact years • Auto-categorized</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    Target Role
+                                </label>
+                                <select id="resume-role" class="input-field w-full">
+                                    <option value="Frontend Developer">Frontend Developer</option>
+                                    <option value="Backend Developer">Backend Developer</option>
+                                    <option value="Full Stack Developer">Full Stack Developer</option>
+                                    <option value="Data Scientist">Data Scientist</option>
+                                    <option value="ML Engineer">ML Engineer</option>
+                                    <option value="Data Analyst">Data Analyst</option>
+                                    <option value="DevOps Engineer">DevOps Engineer</option>
+                                    <option value="Software Engineer">Software Engineer</option>
+                                    <option value="Product Manager">Product Manager</option>
+                                    <option value="UX Designer">UX Designer</option>
+                                    <option value="Mobile Developer">Mobile Developer</option>
+                                    <option value="Cloud Engineer">Cloud Engineer</option>
+                                    <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                                    <option value="QA Engineer">QA Engineer</option>
+                                    <option value="Technical Lead">Technical Lead</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Company Name (Optional)
+                            </label>
+                            <input 
+                                type="text" 
+                                id="resume-company" 
+                                class="input-field w-full"
+                                placeholder="e.g., Tech Corp"
+                            >
+                        </div>
+
+                        <button onclick="generateFromResume()" class="btn-primary w-full py-3">
+                            <i class="fas fa-magic mr-2"></i> Generate Cover Letter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Input Generation -->
+            <div id="manual-tab" class="tab-content hidden">
+                <div class="glass-morphism p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-white">Manual Input Generation</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Job Description
+                            </label>
+                            <textarea 
+                                id="manual-jd" 
+                                class="textarea-field w-full"
+                                placeholder="Paste the complete job description here..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Your Information
+                            </label>
+                            <textarea 
+                                id="manual-input" 
+                                class="textarea-field w-full"
+                                placeholder="Enter your skills, experience, and qualifications..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    Years of Experience
+                                </label>
+                                <div class="flex gap-2">
+                                    <input 
+                                        type="number" 
+                                        id="manual-years" 
+                                        class="input-field w-24"
+                                        placeholder="Years"
+                                        min="0"
+                                        max="50"
+                                        value="3"
+                                    >
+                                    <select id="manual-experience-auto" class="input-field flex-1" disabled>
+                                        <option value="fresher">Fresher / Entry Level (0-1 years)</option>
+                                        <option value="mid-level" selected>Professional (2-5 years)</option>
+                                        <option value="senior">Senior Professional (6-10 years)</option>
+                                        <option value="expert">Expert / Lead (10+ years)</option>
+                                    </select>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Enter exact years • Auto-categorized</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    Target Role
+                                </label>
+                                <select id="manual-role" class="input-field w-full">
+                                    <option value="Frontend Developer">Frontend Developer</option>
+                                    <option value="Backend Developer">Backend Developer</option>
+                                    <option value="Full Stack Developer">Full Stack Developer</option>
+                                    <option value="Data Scientist">Data Scientist</option>
+                                    <option value="ML Engineer">ML Engineer</option>
+                                    <option value="Data Analyst">Data Analyst</option>
+                                    <option value="DevOps Engineer">DevOps Engineer</option>
+                                    <option value="Software Engineer">Software Engineer</option>
+                                    <option value="Product Manager">Product Manager</option>
+                                    <option value="UX Designer">UX Designer</option>
+                                    <option value="Mobile Developer">Mobile Developer</option>
+                                    <option value="Cloud Engineer">Cloud Engineer</option>
+                                    <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                                    <option value="QA Engineer">QA Engineer</option>
+                                    <option value="Technical Lead">Technical Lead</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Company Name (Optional)
+                            </label>
+                            <input 
+                                type="text" 
+                                id="manual-company" 
+                                class="input-field w-full"
+                                placeholder="e.g., Tech Corp"
+                            >
+                        </div>
+
+                        <button onclick="generateFromManual()" class="btn-primary w-full py-3">
+                            <i class="fas fa-magic mr-2"></i> Generate Cover Letter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="hidden">
+                <div class="glass-morphism p-8 text-center">
+                    <div class="loading-spinner mx-auto mb-4"></div>
+                    <p class="text-lg text-white">Generating your cover letter...</p>
+                    <p class="text-sm text-gray-400">This usually takes 10-30 seconds</p>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div id="results" class="hidden">
+                <div class="result-card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-white">Your Cover Letter</h3>
+                        <div class="flex space-x-2">
+                            <button onclick="copyToClipboard()" class="copy-button" id="copy-btn">
+                                <i class="fas fa-copy mr-2"></i> Copy
+                            </button>
+                            <button onclick="downloadCoverLetter()" class="copy-button">
+                                <i class="fas fa-download mr-2"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                    <div id="cover-letter-content" class="bg-gray-900 bg-opacity-50 rounded-lg p-6 text-white leading-relaxed whitespace-pre-wrap"></div>
+                    <div id="generation-stats" class="mt-4 text-sm text-gray-400"></div>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error-message" class="hidden">
+                <div class="glass-morphism p-6 border border-red-500 border-opacity-30">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle text-red-400 mr-3"></i>
+                        <div>
+                            <h4 class="text-red-400 font-semibold">Generation Failed</h4>
+                            <p class="text-gray-300" id="error-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/index.js"></script>
+</body>
+</html>
