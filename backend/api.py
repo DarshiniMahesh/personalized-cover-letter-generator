@@ -1,12 +1,12 @@
 """
 Flask API for Advanced Cover Letter Generator
-Web server for the cover letter generation application
+Web server for cover letter generation application
 """
 
 import os
 import sys
 from datetime import datetime
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import random
@@ -20,7 +20,7 @@ from matcher import AdvancedMatcher
 from similarity import SimilarityCalculator, ContentMatcher
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app)
 
 # Configuration
@@ -188,9 +188,43 @@ def generate_cover_letter():
         elif method == 'resume':
             if not resume_text and not user_input:
                 return jsonify({'error': 'Resume text or user input is required for resume-based generation'}), 400
-            # Use resume_text if available, otherwise use user_input
-            input_text = resume_text or user_input
+            
+            # Process resume like CLI does - extract clean info first
+            if resume_text:
+                # Extract info from raw resume text (like CLI does)
+                resume_info = generator.extract_user_info(resume_text)
+                extracted_name = resume_info.get('name', 'Candidate')
+                extracted_years = resume_info.get('years', '3 years')
+                extracted_skills = resume_info.get('skills', 'python, java, javascript')
+                
+                # Create clean input like CLI format for skills/experience
+                clean_input = f"My name is {extracted_name} and I have {extracted_years}. I am skilled in {extracted_skills}."
+                print(f"🔍 Frontend Debug - Clean input created: {clean_input}")
+                
+                # Use ORIGINAL resume text for generation (like CLI does)
+                input_text = resume_text
+                personal_input = clean_input
+            else:
+                # Use user_input directly if no resume_text
+                input_text = user_input
+                personal_input = user_input
+            
             cover_letter = generator.generate_cover_letter(job_description, input_text, company=company, experience_level=experience_level, target_role=target_role)
+            # The generator.py already handles the name via candidate_name template variable
+            # Just clean up any trailing resume content if needed
+            if resume_text:
+                lines = cover_letter.split('\n')
+                cleaned_lines = []
+                
+                for line in lines:
+                    line_stripped = line.strip()
+                    # Skip resume section headers and everything after
+                    if any(header in line_stripped for header in ['Career Objective', 'Education', 'Technical Skills', 'Experience', 'Projects']):
+                        break
+                    cleaned_lines.append(line)
+                
+                cover_letter = '\n'.join(cleaned_lines)
+                print(f"🔍 Web API Debug - Cover letter after cleanup: {cover_letter[-200:]}")
             
         elif method == 'manual_jd':
             if not job_description:
@@ -222,13 +256,13 @@ def generate_cover_letter():
                 'character_count': len(cover_letter)
             },
             'matching_analysis': {
-                'overall_score': round(matching_analysis['overall_score'], 3),
-                'content_similarity': round(matching_analysis['content_similarity'], 3),
-                'skill_alignment': round(matching_analysis['skill_alignment'], 3),
-                'tone_appropriateness': round(matching_analysis['tone_appropriateness'], 3),
-                'length_appropriateness': round(matching_analysis['length_appropriateness'], 3),
-                'keyword_coverage': round(matching_analysis['keyword_coverage'], 3),
-                'experience_level_match': round(matching_analysis['experience_level_match'], 3),
+                'overall_score': round(matching_analysis['overall_score'],3),
+                'content_similarity': round(matching_analysis['content_similarity'],3),
+                'skill_alignment': round(matching_analysis['skill_alignment'],3),
+                'tone_appropriateness': round(matching_analysis['tone_appropriateness'],3),
+                'length_appropriateness': round(matching_analysis['length_appropriateness'],3),
+                'keyword_coverage': round(matching_analysis['keyword_coverage'],3),
+                'experience_level_match': round(matching_analysis['experience_level_match'],3),
                 'detailed_analysis': matching_analysis['detailed_analysis']
             }
         })
@@ -275,7 +309,7 @@ def upload_resume():
         print("Temporary file removed")
         
         if not resume_text.strip():
-            return jsonify({'error': 'Could not extract text from the uploaded file'}), 400
+            return jsonify({'error': 'Could not extract text from uploaded file'}), 400
         
         return jsonify({
             'success': True,
@@ -328,7 +362,7 @@ def upload_jd():
         print("Temporary file removed")
         
         if not jd_text.strip():
-            return jsonify({'error': 'Could not extract text from the uploaded file'}), 400
+            return jsonify({'error': 'Could not extract text from uploaded file'}), 400
         
         return jsonify({
             'success': True,
@@ -371,13 +405,13 @@ def analyze_match():
             'success': True,
             'timestamp': datetime.now().isoformat(),
             'matching_analysis': {
-                'overall_score': round(matching_analysis['overall_score'], 3),
-                'content_similarity': round(matching_analysis['content_similarity'], 3),
-                'skill_alignment': round(matching_analysis['skill_alignment'], 3),
-                'tone_appropriateness': round(matching_analysis['tone_appropriateness'], 3),
-                'length_appropriateness': round(matching_analysis['length_appropriateness'], 3),
-                'keyword_coverage': round(matching_analysis['keyword_coverage'], 3),
-                'experience_level_match': round(matching_analysis['experience_level_match'], 3),
+                'overall_score': round(matching_analysis['overall_score'],3),
+                'content_similarity': round(matching_analysis['content_similarity'],3),
+                'skill_alignment': round(matching_analysis['skill_alignment'],3),
+                'tone_appropriateness': round(matching_analysis['tone_appropriateness'],3),
+                'length_appropriateness': round(matching_analysis['length_appropriateness'],3),
+                'keyword_coverage': round(matching_analysis['keyword_coverage'],3),
+                'experience_level_match': round(matching_analysis['experience_level_match'],3),
                 'detailed_analysis': matching_analysis['detailed_analysis']
             },
             'analysis_info': {
@@ -427,18 +461,18 @@ def analyze_resume():
             'success': True,
             'timestamp': datetime.now().isoformat(),
             'resume_match': {
-                'overall_similarity': round(resume_match['overall_similarity'], 3),
-                'skill_match': round(resume_match['skill_match'], 3),
-                'experience_match': round(resume_match['experience_match'], 3),
+                'overall_similarity': round(resume_match['overall_similarity'],3),
+                'skill_match': round(resume_match['skill_match'],3),
+                'experience_match': round(resume_match['experience_match'],3),
                 'matched_skills': resume_match['matched_skills'],
                 'missing_skills': resume_match['missing_skills'],
                 'resume_skills': resume_match['resume_skills'],
                 'required_skills': resume_match['required_skills']
             },
             'similarity_scores': {
-                'cosine_similarity': round(similarity_scores['cosine_similarity'], 3),
-                'jaccard_similarity': round(similarity_scores['jaccard_similarity'], 3),
-                'combined_similarity': round(similarity_scores['combined_similarity'], 3)
+                'cosine_similarity': round(similarity_scores['cosine_similarity'],3),
+                'jaccard_similarity': round(similarity_scores['jaccard_similarity'],3),
+                'combined_similarity': round(similarity_scores['combined_similarity'],3)
             },
             'recommendations': recommendations,
             'analysis_info': {
@@ -471,6 +505,24 @@ def test_endpoint():
         ]
     })
 
+@app.route('/static/js/index.js')
+def serve_index_js():
+    """Serve the index.js file."""
+    try:
+        return send_from_directory('static', 'index.js')
+    except Exception as e:
+        print(f"Error serving index.js: {e}")
+        return jsonify({'error': 'File not found'}), 404
+
+@app.route('/static/<path:filename>')
+def serve_static_files(filename):
+    """Serve static files."""
+    try:
+        return send_from_directory('static', filename)
+    except Exception as e:
+        print(f"Error serving static file: {e}")
+        return jsonify({'error': 'File not found'}), 404
+
 @app.errorhandler(404)
 def not_found(error):
     """Handle 404 errors."""
@@ -498,7 +550,7 @@ if __name__ == '__main__':
     print("   POST /api/analyze-resume - Analyze resume-job compatibility")
     print()
     
-    # Change to the project root directory
+    # Change to project root directory
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     os.chdir(project_root)
     sys.path.insert(0, project_root)

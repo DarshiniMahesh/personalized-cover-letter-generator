@@ -52,6 +52,64 @@ class CoverLetterGenerator:
             "Thank you for reviewing my application. I am excited about the possibility of contributing to your team."
         ]
     
+    def _create_skill_narrative(self, skills: str, experience_level: str, years: str) -> str:
+        """Create a coherent narrative from skills based on experience level."""
+        skills_list = [skill.strip().lower() for skill in skills.split(',')]
+        
+        # Define skill categories and narratives
+        if experience_level == 'fresher':
+            if any(skill in skills_list for skill in ['python', 'java', 'javascript']):
+                return f"strong foundation in {skills} with academic projects demonstrating practical application"
+            elif any(skill in skills_list for skill in ['react', 'vue', 'angular']):
+                return f"proficiency in modern frontend technologies including {skills}"
+            else:
+                return f"comprehensive training in {skills} with hands-on project experience"
+                
+        elif experience_level == 'mid-level':
+            if any(skill in skills_list for skill in ['python', 'java', 'node.js']):
+                return f"{years} of professional experience developing robust solutions with {skills}"
+            elif any(skill in skills_list for skill in ['react', 'vue', 'css']):
+                return f"{years} creating responsive user interfaces and modern web applications using {skills}"
+            else:
+                return f"{years} of diverse experience with {skills} across multiple projects"
+                
+        else:  # experienced
+            if any(skill in skills_list for skill in ['python', 'java', 'go']):
+                return f"extensive background in {skills} with expertise in system architecture and optimization"
+            elif any(skill in skills_list for skill in ['react', 'angular', 'typescript']):
+                return f"deep expertise in frontend development with {skills} and modern frameworks"
+            else:
+                return f"comprehensive mastery of {skills} with leadership and architectural experience"
+    
+    def _group_related_skills(self, skills_list: List[str]) -> List[str]:
+        """Group related skills for better narrative flow."""
+        # Define skill groups
+        backend = ['python', 'java', 'node.js', 'go', 'spring', 'django', 'flask']
+        frontend = ['react', 'vue', 'angular', 'typescript', 'javascript', 'html', 'css']
+        database = ['mysql', 'postgresql', 'mongodb', 'redis']
+        cloud = ['aws', 'azure', 'gcp', 'docker', 'kubernetes']
+        
+        # Group skills by category
+        grouped = []
+        for skill in skills_list:
+            skill_lower = skill.lower()
+            if skill_lower in backend and not any(b in grouped for b in backend if b.lower() in skill_lower):
+                backend_skills = [s for s in skills_list if s.lower() in backend]
+                if len(backend_skills) > 1:
+                    grouped.append(f"{', '.join(backend_skills[:-1])} and {backend_skills[-1]}")
+                else:
+                    grouped.extend(backend_skills)
+            elif skill_lower in frontend and not any(f in grouped for f in frontend if f.lower() in skill_lower):
+                frontend_skills = [s for s in skills_list if s.lower() in frontend]
+                if len(frontend_skills) > 1:
+                    grouped.append(f"{', '.join(frontend_skills[:-1])} and {frontend_skills[-1]}")
+                else:
+                    grouped.extend(frontend_skills)
+            elif skill_lower not in [g.lower() for g in grouped]:
+                grouped.append(skill)
+        
+        return grouped[:6]  # Limit to 6 skills
+    
     def _get_fresher_templates(self) -> List[str]:
         """Get templates for freshers/entry-level positions."""
         return [
@@ -59,11 +117,11 @@ class CoverLetterGenerator:
 
 {opening_phrase} {position} position at {company}. As a recent graduate with a strong foundation in {key_skills}, I am eager to bring my fresh perspective and enthusiasm to your team.
 
-During my academic career, I developed expertise in {specialized_skills} through coursework and projects. My experience with {matched_content} has prepared me to contribute effectively to your team's objectives. I've worked on several projects that required me to apply theoretical knowledge to real-world challenges, which has strengthened my problem-solving abilities.
+During my academic career, I developed {specialized_skills} through coursework and projects. My experience with {matched_content} has prepared me to contribute effectively to your team's objectives. I've worked on several projects that required me to apply theoretical knowledge to real-world challenges, which has strengthened my problem-solving abilities.
 
 I am particularly drawn to {company} because of your commitment to {company_values}. This aligns perfectly with my own values of {professional_values} and my desire to work for an organization that values innovation and growth. Your company's work in {dynamic_content} especially resonates with my career aspirations.
 
-As a fresher, I bring a unique combination of theoretical knowledge and practical skills. I am a quick learner, adaptable, and passionate about {key_skills}. My academic projects have honed my problem-solving abilities and taught me the importance of collaboration and attention to detail. I believe my fresh perspective could bring new ideas to your team.
+As a fresher, I bring a unique combination of theoretical knowledge and practical skills. I am a quick learner, adaptable, and passionate about {specialized_skills}. My academic projects have honed my problem-solving abilities and taught me the importance of collaboration and attention to detail. I believe my fresh perspective could bring new ideas to your team.
 
 I would welcome the opportunity to discuss how my education, skills, and enthusiasm can benefit {company}. Thank you for considering my application.
 
@@ -82,6 +140,22 @@ What particularly attracts me to {company} is your reputation for {company_value
 As a recent graduate, I offer a unique combination of up-to-date theoretical knowledge and practical application skills. I am proficient in {key_skills} and have demonstrated my ability to quickly adapt to new technologies and methodologies. I'm excited about the opportunity to contribute my energy and fresh ideas to your established team.
 
 I am excited about the possibility of contributing my skills and enthusiasm to {company}. I would appreciate the opportunity to discuss how I can add value to your team.
+
+{closing_phrase}
+
+{candidate_name}""",
+            
+            """Dear {hiring_manager},
+
+I am writing to express my strong interest in the {position} position at {company}. As a recent graduate passionate about {key_skills}, I am eager to apply my academic knowledge and practical skills in a professional environment.
+
+Throughout my education, I have developed a strong foundation in {specialized_skills} through rigorous coursework and hands-on projects. My experience with {matched_content} has equipped me with the technical abilities and problem-solving mindset needed to contribute effectively to your team's objectives. I have successfully completed projects that demonstrate my ability to translate theoretical concepts into practical solutions.
+
+{company}'s commitment to {company_values} and innovation in {dynamic_content} deeply resonates with my career aspirations. I am particularly impressed by your organization's approach to emerging technologies and believe my fresh perspective would be valuable to your team.
+
+As an entry-level professional, I bring enthusiasm, adaptability, and a strong desire to learn and grow. I am proficient in {key_skills} and have demonstrated my ability to quickly master new technologies and collaborate effectively in team environments. I am confident that my combination of academic excellence and practical skills makes me a strong candidate for this position.
+
+I would welcome the opportunity to discuss how my background and skills can benefit {company}. Thank you for your time and consideration.
 
 {closing_phrase}
 
@@ -133,9 +207,9 @@ I am eager to discuss how my background and expertise can benefit {company}. Tha
 
 My career has been focused on building comprehensive skills in {specialized_skills}. Through various roles and projects, I have gained hands-on experience with {matched_content}, which has prepared me to handle the responsibilities outlined in your job description. I am particularly proud of my contributions to {key_achievements}, where I successfully delivered projects that exceeded expectations and drove measurable business impact.
 
-I have long admired {company}'s commitment to {company_values} and your innovative approach to {dynamic_content}. Your organization's culture of excellence and continuous learning aligns perfectly with my professional values and career aspirations. I've been particularly impressed by how {company} fosters innovation while maintaining high standards of quality.
+I have long admired {company}'s {dynamic_content}. Your organization's culture of excellence and continuous learning aligns perfectly with my professional values and career aspirations. I've been particularly impressed by how {company} fosters innovation while maintaining high standards of quality.
 
-As a mid-level professional, I bring a balanced combination of technical expertise and business acumen. I have experience in {key_skills} and have developed strong problem-solving abilities, project management skills, and the capacity to work effectively in cross-functional teams. I believe my experience in bridging technical solutions with business needs would be valuable to your organization.
+As a mid-level professional, I bring {value_proposition}. I have experience in {key_skills} and have developed strong problem-solving abilities, project management skills, and the capacity to work effectively in cross-functional teams. I believe my experience in bridging technical solutions with business needs would be valuable to your organization.
 
 {closing_phrase}
 
@@ -150,11 +224,9 @@ Sincerely,
 
 My professional journey has been characterized by continuous growth and learning in {specialized_skills}. I have gained valuable experience working with {matched_content}, which has equipped me to handle diverse challenges and deliver consistent results. My key achievements include {key_achievements}.
 
-{company}'s reputation for excellence in {company_values} and your forward-thinking approach to {dynamic_content} make you an ideal employer for professionals seeking growth and impact. I am particularly impressed by your commitment to innovation and professional development.
+{company}'s {dynamic_content} make you an ideal employer for professionals seeking growth and impact. I am particularly impressed by your commitment to innovation and professional development.
 
-With my background in {key_skills}, I offer a unique blend of technical proficiency and business understanding. I have experience leading projects, collaborating with diverse teams, and delivering solutions that drive business value and customer satisfaction.
-
-I am enthusiastic about the opportunity to contribute my skills and experience to {company}. I would appreciate the chance to discuss how I can add value to your team.
+With my background in {key_skills}, I offer {career_aspiration}. I have experience leading projects, collaborating with diverse teams, and delivering solutions that drive business value and customer satisfaction.
 
 {closing_phrase}
 
@@ -303,11 +375,34 @@ I am enthusiastic about the opportunity to contribute my skills and experience t
         else:
             print(f"🔍 Debug: No experience found in user_input: {user_input[:100]}...")
         
-        # Extract skills
+        # Extract skills - exclude experience phrases more aggressively
         skills = []
+        user_input_lower = user_input.lower()
+        
+        # Remove ALL experience phrases from user input to avoid false skill matches
+        cleaned_input = user_input_lower
+        cleaned_input = re.sub(r'\d+\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', cleaned_input)
+        cleaned_input = re.sub(r'\d+\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+in', '', cleaned_input)
+        cleaned_input = re.sub(r'with\s+\d+\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', cleaned_input)
+        cleaned_input = re.sub(r'building\s+comprehensive\s+skills\s+in\s+\d+\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', cleaned_input)
+        cleaned_input = re.sub(r'focused\s+on\s+building\s+comprehensive\s+skills\s+in\s+\d+\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', cleaned_input)
+        cleaned_input = re.sub(r'characterized\s+by\s+continuous\s+growth\s+and\s+learning\s+in\s+\d+\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', cleaned_input)
+        
+        print(f"🔍 Debug: Original user_input: {user_input[:200]}...")
+        print(f"🔍 Debug: Cleaned input for skills: {cleaned_input[:200]}...")
+        
         for category, skill_list in self.skill_database.items():
             for skill in skill_list:
-                if skill.lower() in user_input.lower():
+                skill_lower = skill.lower()
+                # Only match if skill appears as a standalone skill, not part of experience phrase
+                if (skill_lower in cleaned_input and 
+                    not any(exp_phrase in cleaned_input for exp_phrase in [
+                        f'{skill_lower} years', f'years {skill_lower}', 
+                        f'experience {skill_lower}', f'{skill_lower} experience',
+                        f'developing robust solutions with {skill_lower}',
+                        f'professional experience developing robust solutions with {skill_lower}'
+                    ])):
+                    print(f"🔍 Debug: Skill found: {skill}")
                     skills.append(skill)
         
         # Extract achievements
@@ -359,13 +454,17 @@ I am enthusiastic about the opportunity to contribute my skills and experience t
         else:
             return 'professional'
     
-    def _generate_dynamic_content(self, job_info: Dict, user_info: Dict) -> str:
-        """Generate dynamic content based on context."""
+    def _generate_dynamic_content(self, job_info: Dict, user_info: Dict, content_type: str = "general") -> str:
+        """Generate dynamic content based on context and content type."""
         if not job_info or not user_info:
             return "professional growth and development"
         
         user_skills = user_info.get('skills', '').lower()
         job_skills = job_info.get('skills', '').lower()
+        user_years = user_info.get('years', '0 years')
+        experience_level = user_info.get('experience_level', 'mid-level')
+        company = job_info.get('company', 'the company')
+        position = job_info.get('position', 'this position')
         
         # Find common skills
         common_skills = []
@@ -374,10 +473,85 @@ I am enthusiastic about the opportunity to contribute my skills and experience t
             job_skill_list = [skill.strip().lower() for skill in job_skills.split(',')]
             common_skills = list(set(user_skill_list) & set(job_skill_list))
         
-        if common_skills:
-            return f"expertise in {', '.join(common_skills[:3])}"
-        else:
-            return "professional growth and development"
+        # Dynamic content based on content type
+        if content_type == "company_alignment":
+            company_content = [
+                f"your innovative approach to emerging technologies and digital transformation",
+                f"your commitment to excellence and pushing technological boundaries",
+                f"your focus on creating meaningful impact through cutting-edge solutions",
+                f"your dedication to solving complex challenges with innovative approaches",
+                f"your culture of continuous learning and professional growth",
+                f"your vision for transforming the industry through technology",
+                f"your emphasis on quality, user experience, and scalable solutions",
+                f"your leadership in the technology sector"
+            ]
+            return random.choice(company_content)
+        
+        elif content_type == "skills_demonstration":
+            if common_skills:
+                skill_content = [
+                    f"my hands-on experience with {', '.join(common_skills[:3])} in real-world projects",
+                    f"my proven track record of delivering solutions using {', '.join(common_skills[:3])}",
+                    f"my expertise in developing robust applications with {', '.join(common_skills[:3])}",
+                    f"my comprehensive understanding of {', '.join(common_skills[:3])} and best practices",
+                    f"my ability to leverage {', '.join(common_skills[:3])} to solve complex business problems"
+                ]
+                return random.choice(skill_content)
+            else:
+                fallback_skills = ["modern technologies", "innovative solutions", "scalable systems", "best practices"]
+                return random.choice(fallback_skills)
+        
+        elif content_type == "value_proposition":
+            if experience_level == 'fresher':
+                value_content = [
+                    "my fresh perspective combined with strong theoretical foundations",
+                    "my enthusiasm for learning and adapting to new technologies",
+                    "my academic excellence and practical project experience",
+                    "my ability to bring new ideas and energy to established teams",
+                    "my strong foundation in modern development practices"
+                ]
+            elif experience_level == 'mid-level':
+                value_content = [
+                    f"my {user_years} of balanced technical and business experience",
+                    "my proven ability to bridge technical solutions with business needs",
+                    "my experience in both individual contributions and team leadership",
+                    "my track record of delivering projects on time and exceeding expectations",
+                    "my expertise in scaling applications and optimizing performance"
+                ]
+            else:  # experienced
+                value_content = [
+                    "my extensive background in system architecture and strategic planning",
+                    "my leadership experience in mentoring teams and driving innovation",
+                    "my proven ability to transform business requirements into technical solutions",
+                    "my expertise in enterprise-level development and best practices",
+                    "my track record of successful project delivery and team building"
+                ]
+            return random.choice(value_content)
+        
+        elif content_type == "career_aspiration":
+            aspiration_content = [
+                f"contributing to {company}'s mission of technological excellence",
+                f"growing professionally while delivering value to your organization",
+                f"applying my skills to solve meaningful challenges at {company}",
+                f"becoming an integral part of your innovative team",
+                f"advancing my career while helping {company} achieve its goals",
+                f"leveraging my expertise to drive {company}'s success"
+            ]
+            return random.choice(aspiration_content)
+        
+        else:  # general content
+            if common_skills:
+                return f"expertise in {', '.join(common_skills[:3])}"
+            else:
+                general_content = [
+                    "professional growth and development",
+                    "innovative technology solutions",
+                    "scalable system architecture",
+                    "cutting-edge development practices",
+                    "business-driven technology solutions",
+                    "enterprise-level software development"
+                ]
+                return random.choice(general_content)
     
     def _enhance_natural_flow(self, text: str) -> str:
         """Enhance natural flow and readability."""
@@ -470,57 +644,102 @@ I am enthusiastic about the opportunity to contribute my skills and experience t
         if not experience_level:
             experience_level = user_info.get('experience_level', 'mid-level')
         
-        # Select appropriate template
-        template = random.choice(self.templates.get(experience_level, self.templates['mid-level']))
+        # Select appropriate template based on user context and skills
+        templates = self.templates.get(experience_level, self.templates['mid-level'])
+        
+        # Intelligent template selection based on user context
+        user_skills_lower = user_info.get('skills', '').lower()
+        user_name = user_info.get('name', 'Candidate')
+        
+        # Select template based on skills and context
+        if 'python' in user_skills_lower and 'django' in user_skills_lower:
+            template = templates[0]  # Backend-focused template
+        elif 'react' in user_skills_lower or 'vue' in user_skills_lower:
+            template = templates[1] if len(templates) > 1 else templates[0]  # Frontend-focused
+        elif 'machine learning' in user_skills_lower or 'tensorflow' in user_skills_lower:
+            template = templates[-1]  # ML-focused template
+        else:
+            # Use hash of user skills for consistent but varied selection
+            skill_hash = hash(user_skills_lower + user_name) % len(templates)
+            template = templates[skill_hash]
         
         # Determine tone
         tone = self._determine_tone(job_info, user_info)
         
-        # Process user skills
+        # Process user skills into intelligent narrative
         user_skills = user_info.get('skills', 'relevant technologies')
         if 'go' in user_skills.lower():
             skills_list = [skill for skill in user_skills.split(',') if skill.strip().lower() != 'go']
             user_skills = ', '.join(skills_list) if skills_list else 'relevant technologies'
         
-        # Shuffle skills for variety
-        skills_list = user_skills.split(', ')
-        if len(skills_list) > 4:
-            random.shuffle(skills_list)
-            user_skills = ', '.join(skills_list[:6])
+        # Create skill narrative based on experience level and skill combination
+        skill_narrative = self._create_skill_narrative(user_info.get('skills', ''), experience_level, user_info.get('years', '0 years'))
         
-        # Prepare template variables
+        # Shuffle skills for variety but maintain narrative coherence
+        skills_list = [skill.strip() for skill in user_skills.split(',')]
+        if len(skills_list) > 4:
+            # Group related skills for better flow
+            grouped_skills = self._group_related_skills(skills_list)
+            user_skills = ', '.join(grouped_skills[:6])
+        
+        # Clean up skills to avoid duplicate experience mentions and repetitive phrases
+        user_skills = re.sub(r'\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', user_skills, flags=re.IGNORECASE)
+        user_skills = re.sub(r'\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+in', '', user_skills, flags=re.IGNORECASE)
+        user_skills = re.sub(r'with\s+\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', user_skills, flags=re.IGNORECASE)
+        user_skills = re.sub(r'building\s+comprehensive\s+skills\s+in\s+\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', user_skills, flags=re.IGNORECASE)
+        user_skills = re.sub(r'focused\s+on\s+building\s+comprehensive\s+skills\s+in\s+\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', user_skills, flags=re.IGNORECASE)
+        user_skills = re.sub(r'characterized\s+by\s+continuous\s+growth\s+and\s+learning\s+in\s+\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', user_skills, flags=re.IGNORECASE)
+        user_skills = re.sub(r'strong\s+foundation\s+in\s+([^.]+)\s+with\s+academic\s+projects\s+demonstrating\s+practical\s+application', r'\1', user_skills, flags=re.IGNORECASE)
+        user_skills = re.sub(r'extensive\s+background\s+in\s+([^.]+)\s+with\s+expertise\s+in\s+system\s+architecture\s+and\s+optimization', r'\1', user_skills, flags=re.IGNORECASE)
+        user_skills = re.sub(r'\s+', ' ', user_skills).strip()
+        if not user_skills:
+            user_skills = 'python, java, javascript, c++, flask'
+        
+        # Clean up skill narrative as well
+        if 'skill_narrative' in locals():
+            skill_narrative = re.sub(r'\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+developing\s+robust\s+solutions\s+with', '', skill_narrative, flags=re.IGNORECASE)
+            skill_narrative = re.sub(r'\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience\s+in', '', skill_narrative, flags=re.IGNORECASE)
+            skill_narrative = re.sub(r'strong\s+foundation\s+in\s+([^.]+)\s+with\s+academic\s+projects\s+demonstrating\s+practical\s+application', r'\1', skill_narrative, flags=re.IGNORECASE)
+            skill_narrative = re.sub(r'extensive\s+background\s+in\s+([^.]+)\s+with\s+expertise\s+in\s+system\s+architecture\s+and\s+optimization', r'\1', skill_narrative, flags=re.IGNORECASE)
+            skill_narrative = re.sub(r'\s+', ' ', skill_narrative).strip()
+        
+        # Prepare template variables with randomization for variety
+        random.seed()  # Reset seed for true randomness
         template_vars = {
             'hiring_manager': 'Hiring Manager',
             'position': target_role or job_info.get('position', 'Professional position'),
             'company': company or job_info.get('company', 'the Company'),
-            'key_skills': job_info.get('skills', user_skills),
-            'matched_content': best_match_content or self._generate_dynamic_content(job_info, user_info),
+            'key_skills': skill_narrative if 'skill_narrative' in locals() else job_info.get('skills', user_skills),
+            'matched_content': best_match_content or self._generate_dynamic_content(job_info, user_info, "skills_demonstration"),
             'years_experience': user_info.get('years', '0 years'),
             'candidate_name': user_info.get('name', 'Candidate'),
             'company_values': job_info.get('company_values', 'innovation and excellence'),
             'key_achievements': user_info.get('achievements', 'delivering successful projects'),
             'professional_values': 'professional excellence',
-            'specialized_skills': user_skills,
+            'specialized_skills': skill_narrative if 'skill_narrative' in locals() else user_skills,
             'opening_phrase': random.choice(self.opening_phrases),
             'closing_phrase': random.choice(self.closing_phrases),
             'tone': tone,
-            'dynamic_content': self._generate_dynamic_content(job_info, user_info)
+            'dynamic_content': self._generate_dynamic_content(job_info, user_info, "company_alignment"),
+            'value_proposition': self._generate_dynamic_content(job_info, user_info, "value_proposition"),
+            'career_aspiration': self._generate_dynamic_content(job_info, user_info, "career_aspiration")
         }
         
         try:
             # Generate cover letter
             cover_letter = template.format(**template_vars)
             
-            # Extract experience from user_input to override if needed
-            exp_match = re.search(r'I have (\d+\+?)\s*years', user_input, re.IGNORECASE)
-            if exp_match:
-                # Replace the experience in the generated letter
-                cover_letter = re.sub(r'\b\d+\+?\s*years', exp_match.group(1) + ' years', cover_letter, flags=re.IGNORECASE)
-            else:
-                # Also try to extract from user_info
-                user_exp = user_info.get('years', '3+')
-                if user_exp != '3+':
-                    cover_letter = re.sub(r'\b3\+\s*years', user_exp, cover_letter, flags=re.IGNORECASE)
+            # Aggressive cleanup for duplicate experience mentions
+            # Remove patterns like "3 years of experience in 3 years of professional experience"
+            cover_letter = re.sub(r'(\d+\+?\s*years?\s+of\s+experience)\s+in\s+(\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience)', r'\1', cover_letter, flags=re.IGNORECASE)
+            cover_letter = re.sub(r'With\s+(\d+\+?\s*years?\s+of\s+experience)\s+in\s+(\d+\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience)', r'With \1', cover_letter, flags=re.IGNORECASE)
+            
+            # Fix duplicate experience mentions - only replace if needed
+            user_years = user_info.get('years', '3 years')
+            if user_years != '3 years':
+                # Replace the experience in the generated letter with the correct one
+                cover_letter = re.sub(r'\b\d+\+?\s*years?\s+of\s+experience', user_years + ' of experience', cover_letter, flags=re.IGNORECASE)
+                cover_letter = re.sub(r'\b\d+\+?\s*years?\s+professional\s+experience', user_years + ' professional experience', cover_letter, flags=re.IGNORECASE)
             
             # Enhance and clean
             cover_letter = self._enhance_natural_flow(cover_letter)
@@ -556,7 +775,6 @@ I am enthusiastic about the opportunity to contribute my skills and experience t
             return f"""Dear Hiring Manager,
 
 I am excited to apply for the {template_vars['position']} position at {template_vars['company'] or 'your company'}.
-
 Based on my background in {user_info.get('skills', 'relevant technologies')} and the requirements outlined in your job description, I believe I would be a valuable addition to your team.
 
 I look forward to discussing how my qualifications can benefit your organization.
