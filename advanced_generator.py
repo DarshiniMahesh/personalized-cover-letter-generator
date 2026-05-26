@@ -1,3 +1,4 @@
+#new updated file
 """
 Advanced Interactive Cover Letter Generator
 Supports uploading custom job descriptions and resume-based generation.
